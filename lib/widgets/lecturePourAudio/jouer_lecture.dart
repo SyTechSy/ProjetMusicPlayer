@@ -1,5 +1,8 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_player_projet/model/son_model.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
@@ -259,7 +262,7 @@ class _PlayerAudioWidgetState extends State<PlayerAudioWidget> {
             height: 20,
           ),
 
-
+          SlideProgreeAudio(),
 
           /*Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -281,3 +284,116 @@ class _PlayerAudioWidgetState extends State<PlayerAudioWidget> {
   }
 
 }
+
+class SlideProgreeAudio extends StatefulWidget {
+  const SlideProgreeAudio({super.key});
+
+  @override
+  State<SlideProgreeAudio> createState() => _SlideProgreeAudioState();
+}
+
+class _SlideProgreeAudioState extends State<SlideProgreeAudio> {
+  final _player = AudioPlayer();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsFlutterBinding.ensureInitialized();
+    _setupAudioPlayer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+
+          _progessBar(),
+
+          Row(
+            children: [
+              _playbackControlButton(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  /*Future<void> _setupAudioPlayer() async {
+    _player.playbackEventStream.listen((event) { },
+        onError: (Object e, StackTrace stacktrace) {
+      print("A stream error occurred : $e");
+    });
+    try {
+      _player.setAudioSource(AudioSource.uri(Uri.parse("https://soundcloud.com/tommyrichmann/million-dollar-baby-vhs?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing.mp3")));
+    } catch(e) {
+      print("Error loading audio source : $e");
+    }
+  }*/
+  Future<void> _setupAudioPlayer() async {
+    _player.playbackEventStream.listen((event) { },
+        onError: (Object e, StackTrace stacktrace) {
+          print("Une erreur de flux s'est produite : $e");
+        });
+    try {
+      await _player.setAudioSource(AudioSource.asset('assets/MYLMO_Ft._DR_KEB_-_SAMBA__2021_.MP3'));
+    } catch(e) {
+      print("Erreur lors du chargement de la source audio: $e");
+    }
+  }
+
+  Widget _progessBar() {
+    return StreamBuilder<Duration?>(
+        stream: _player.positionStream, builder: (context, snapshot) {
+          return ProgressBar(
+              progress: snapshot.data ?? Duration.zero,
+              buffered: _player.bufferedPosition,
+              total: _player.duration ?? Duration.zero
+          );
+    }
+    );
+  }
+
+  Widget _playbackControlButton() {
+    return StreamBuilder<PlayerState>(
+        stream: _player.playerStateStream,
+        builder: (context, snapshot) {
+          final processingState = snapshot.data?.processingState;
+          final playing = snapshot.data?.playing;
+          if (processingState == ProcessingState.loading ||
+          processingState == ProcessingState.buffering) {
+            return Container(
+              margin: EdgeInsets.all(8.0),
+              width: 64,
+              height: 64,
+              child: const CircularProgressIndicator(),
+            );
+          } else if (playing != true) {
+            return IconButton(
+                onPressed: _player.play,
+                iconSize: 64,
+                icon: const Icon(Icons.play_arrow)
+            );
+          } else if (processingState != ProcessingState.completed) {
+            return IconButton(
+                onPressed: _player.pause,
+                iconSize: 64,
+                icon: const Icon(Icons.pause)
+            );
+          } else {
+            return IconButton(
+                onPressed: () => _player.seek(Duration.zero),
+                iconSize: 64,
+                icon: const Icon(Icons.replay)
+            );
+          }
+        });
+  }
+}
+
