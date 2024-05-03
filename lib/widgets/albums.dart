@@ -17,7 +17,7 @@ class AlbumsLists extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Stack(
             children: [
-              Transform.translate(offset: Offset(0, -35),
+              Transform.translate(offset: Offset(0, -25),
                 child: Column(
                   children: [
                     //SizedBox(height: 10),

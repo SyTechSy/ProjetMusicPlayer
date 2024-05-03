@@ -17,6 +17,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         children: [
           //SizedBox(height: 5),
           Container(
+            margin: EdgeInsets.only(top: 10),
             //width: double.infinity,
             height: 220.0,
             decoration: BoxDecoration(

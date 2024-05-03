@@ -29,7 +29,7 @@ class ListMusic {
       photoMusic: 'assets/abdoull.jpg',
       filePath: 'assets/Dr_Keb_-_Tonight(256k).mp3',
       nameArtiste: 'Abdoul Prod ',
-      titreMusic: 'Tonights',
+      titreMusic: 'Trap ou Drill',
       tempsMusic: '04:30',
       hoursPost: 'Il y\'a 1 seconde',
       vuePost: '20.0k',

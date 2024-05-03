@@ -255,12 +255,13 @@ class _PlayerAudioWidgetState extends State<PlayerAudioWidget> {
           ),
 
 
-
           SizedBox(
             height: 20,
           ),
 
-          Row(
+
+
+          /*Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
@@ -273,9 +274,10 @@ class _PlayerAudioWidgetState extends State<PlayerAudioWidget> {
                 height: 18,
               ),
             ],
-          ),
+          ),*/
         ],
       ),
     );
   }
+
 }

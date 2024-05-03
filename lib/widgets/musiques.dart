@@ -17,7 +17,7 @@ class MusiqueLists extends StatelessWidget {
         return Stack(
           children: [
             Transform.translate(
-              offset: const Offset(0, -35),
+              offset: const Offset(0, -25),
               child: Column(
               children: [
                 GestureDetector(

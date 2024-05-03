@@ -8,8 +8,7 @@ class PageChansonsVente extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Text("data"),
-          Text("data 2"),
+
         ],
       ),
     );
